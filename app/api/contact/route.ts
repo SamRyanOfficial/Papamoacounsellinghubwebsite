@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       from: "Papamoa Counselling Hub <onboarding@resend.dev>",
       to: [toAddress],
       subject: `New enquiry: ${subject}`,
-      reply_to: email,
+      replyTo: email,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
