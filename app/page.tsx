@@ -56,17 +56,17 @@ export default function HomePage() {
                </div>
              </div>
             {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 pt-8">
-              <div className="flex items-center text-white/80 text-sm bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <CheckCircle className="w-4 h-4 mr-2 text-teal-300" />
+            <div className="flex flex-nowrap justify-center items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 pt-8 overflow-x-auto">
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-teal-300" />
                 <span>NZAC Registered</span>
               </div>
-              <div className="flex items-center text-white/80 text-sm bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Heart className="w-4 h-4 mr-2 text-rose-300" />
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-rose-300" />
                 <span>Trauma-Informed Care</span>
               </div>
-              <div className="flex items-center text-white/80 text-sm bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Star className="w-4 h-4 mr-2 text-yellow-300" />
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-yellow-300" />
                 <span>5-Star Environment</span>
               </div>
             </div>
@@ -252,12 +252,12 @@ export default function HomePage() {
                         <div className="space-y-2">
                           <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
                           <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />
-                        </div>
+                  </div>
                         <div className="space-y-2">
                           <Label className="text-slate-700 font-medium" htmlFor="lastName">Last name *</Label>
                           <Input name="lastName" id="lastName" placeholder="Your last name" className="rounded-xl" required />
-                        </div>
-                      </div>
+                    </div>
+                  </div>
                       <div className="space-y-2">
                         <Label className="text-slate-700 font-medium" htmlFor="email">Email address *</Label>
                         <Input name="email" id="email" type="email" placeholder="your.email@example.com" className="rounded-xl" required />
@@ -295,7 +295,7 @@ export default function HomePage() {
                       >
                         Send Another Message
                       </Button>
-                    </div>
+                  </div>
                   )}
                 </div>
               </div>
