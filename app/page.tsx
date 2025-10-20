@@ -134,13 +134,13 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <h3 className="text-2xl font-bold">Specializations</h3>
                   <div className="flex flex-wrap gap-2">
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Anxiety</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Depression</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Trauma</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Sexual Harm</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Relationships</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Grief & Loss</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Life Transitions</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Anxiety</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Depression</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Trauma</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Sexual Harm</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Relationships</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Grief & Loss</Badge>
+                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Life Transitions</Badge>
                   </div>
                 </div>
 
@@ -184,8 +184,8 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 bg-gradient-to-br from-blue-50/60 via-white/90 to-teal-50/60 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]" style={{
+      <section id="contact" className="relative py-20 bg-gradient-to-b from-slate-100 via-slate-200 to-slate-300 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23059669' fill-opacity='0.3'%3E%3Cpolygon points='50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40'/%3E%3C/g%3E%3C/svg%3E")`
         }}></div>
         <div className="container px-6 md:px-8 relative z-10">
@@ -194,48 +194,74 @@ export default function HomePage() {
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
                 Send us a <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">Message</span>
               </h2>
-              <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 leading-relaxed">
+              <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-700 leading-relaxed">
                 We're here to support you. Reach out and we'll get back within 24 hours.
               </p>
             </div>
 
             {/* Centered Contact Form Only */}
             <div>
-              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/60 overflow-hidden">
+              <div className="bg-white rounded-3xl shadow-xl border border-white/60 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-emerald-500 p-8 text-white text-center">
                   <h3 className="text-2xl font-bold">Send us a Message</h3>
                   <p className="text-blue-100 leading-relaxed mt-1">
                     Whether you're seeking support or have a question, we're here to help.
-            </p>
-          </div>
+                  </p>
+                </div>
                 <div className="p-8">
-                  <form className="space-y-6">
+                  <form className="space-y-6" onSubmit={async (e) => {
+                    e.preventDefault()
+                    const form = e.currentTarget as HTMLFormElement
+                    const formData = new FormData(form)
+                    const payload = {
+                      firstName: formData.get('firstName'),
+                      lastName: formData.get('lastName'),
+                      email: formData.get('email'),
+                      subject: formData.get('subject'),
+                      message: formData.get('message'),
+                    }
+                    try {
+                      const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                      })
+                      if (res.ok) {
+                        alert('Thanks! Your message has been sent.')
+                        form.reset()
+                      } else {
+                        alert('Sorry, something went wrong. Please try again later.')
+                      }
+                    } catch (err) {
+                      alert('Network error. Please try again later.')
+                    }
+                  }}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium">First name *</Label>
-                        <Input placeholder="Your first name" className="rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-blue-100 border-slate-200 focus:border-blue-400 hover:border-slate-300" />
-                  </div>
+                        <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
+                        <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />
+                      </div>
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium">Last name *</Label>
-                        <Input placeholder="Your last name" className="rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-blue-100 border-slate-200 focus:border-blue-400 hover:border-slate-300" />
-                  </div>
+                        <Label className="text-slate-700 font-medium" htmlFor="lastName">Last name *</Label>
+                        <Input name="lastName" id="lastName" placeholder="Your last name" className="rounded-xl" required />
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Email address *</Label>
-                      <Input type="email" placeholder="your.email@example.com" className="rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-blue-100 border-slate-200 focus:border-blue-400 hover:border-slate-300" />
+                      <Label className="text-slate-700 font-medium" htmlFor="email">Email address *</Label>
+                      <Input name="email" id="email" type="email" placeholder="your.email@example.com" className="rounded-xl" required />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Subject *</Label>
-                      <Input placeholder="How can we help you today?" className="rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-blue-100 border-slate-200 focus:border-blue-400 hover:border-slate-300" />
+                      <Label className="text-slate-700 font-medium" htmlFor="subject">Subject *</Label>
+                      <Input name="subject" id="subject" placeholder="How can we help you today?" className="rounded-xl" required />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Your message *</Label>
-                      <Textarea rows={5} placeholder="Please share what's on your mind..." className="rounded-xl border-2 transition-all duration-200 focus:ring-4 focus:ring-blue-100 border-slate-200 focus:border-blue-400 hover:border-slate-300 resize-none" />
+                      <Label className="text-slate-700 font-medium" htmlFor="message">Your message *</Label>
+                      <Textarea name="message" id="message" rows={5} placeholder="Please share what's on your mind..." className="rounded-xl" required />
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-4 px-8 rounded-xl text-lg shadow-xl transition-all duration-300">
+                    <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-4 px-8 rounded-xl text-lg shadow-xl transition-all duration-300">
                       <Send className="w-5 h-5 mr-2" />
                       Send Message
-                  </Button>
+                    </Button>
                     <p className="text-slate-500 text-sm text-center">
                       * Required fields. We respect your privacy and will never share your information.
                     </p>
