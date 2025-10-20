@@ -213,18 +213,21 @@ export default function HomePage() {
                     e.preventDefault()
                     const form = e.currentTarget as HTMLFormElement
                     const formData = new FormData(form)
-                    const payload = {
-                      firstName: formData.get('firstName'),
-                      lastName: formData.get('lastName'),
-                      email: formData.get('email'),
-                      subject: formData.get('subject'),
-                      message: formData.get('message'),
-                    }
+                    
+                    // Create mailto link as fallback
+                    const firstName = formData.get('firstName') as string
+                    const lastName = formData.get('lastName') as string
+                    const email = formData.get('email') as string
+                    const subject = formData.get('subject') as string
+                    const message = formData.get('message') as string
+                    
+                    const mailtoLink = `mailto:papamoacounsellinghub@gmail.com?subject=${encodeURIComponent(`Contact Form: ${subject}`)}&body=${encodeURIComponent(`From: ${firstName} ${lastName} (${email})\n\nSubject: ${subject}\n\nMessage:\n${message}`)}`
+                    
                     try {
                       const res = await fetch('/api/contact', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
+                        body: JSON.stringify({ firstName, lastName, email, subject, message }),
                       })
                       const data = await res.json()
                       if (res.ok && data.ok) {
@@ -232,11 +235,15 @@ export default function HomePage() {
                         form.reset()
                       } else {
                         console.error('API Error:', data)
-                        alert(`Sorry, something went wrong: ${data.error || 'Unknown error'}. Please try again later.`)
+                        // Fallback to mailto
+                        alert('Email service unavailable. Opening your email client instead...')
+                        window.location.href = mailtoLink
                       }
                     } catch (err) {
                       console.error('Network Error:', err)
-                      alert('Network error. Please check your connection and try again.')
+                      // Fallback to mailto
+                      alert('Network error. Opening your email client instead...')
+                      window.location.href = mailtoLink
                     }
                   }}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
