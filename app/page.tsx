@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, Mail, Phone, Heart, CheckCircle, Star, MapPin, Send } from "lucide-react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -11,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
 export default function HomePage() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   return (
     <div className="flex flex-col min-h-screen w-full relative overflow-x-hidden">
@@ -209,73 +211,92 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="p-8">
-                  <form className="space-y-6" onSubmit={async (e) => {
-                    e.preventDefault()
-                    const form = e.currentTarget as HTMLFormElement
-                    const formData = new FormData(form)
-                    
-                    // Create mailto link as fallback
-                    const firstName = formData.get('firstName') as string
-                    const lastName = formData.get('lastName') as string
-                    const email = formData.get('email') as string
-                    const subject = formData.get('subject') as string
-                    const message = formData.get('message') as string
-                    
-                    const mailtoLink = `mailto:papamoacounsellinghub@gmail.com?subject=${encodeURIComponent(`Contact Form: ${subject}`)}&body=${encodeURIComponent(`From: ${firstName} ${lastName} (${email})\n\nSubject: ${subject}\n\nMessage:\n${message}`)}`
-                    
-                    try {
-                      const res = await fetch('/api/contact', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ firstName, lastName, email, subject, message }),
-                      })
-                      const data = await res.json()
-                      if (res.ok && data.ok) {
-                        alert('Thanks! Your message has been sent successfully.')
-                        form.reset()
-                      } else {
-                        console.error('API Error:', data)
+                  {!isSubmitted ? (
+                    <form className="space-y-6" onSubmit={async (e) => {
+                      e.preventDefault()
+                      const form = e.currentTarget as HTMLFormElement
+                      const formData = new FormData(form)
+                      
+                      // Create mailto link as fallback
+                      const firstName = formData.get('firstName') as string
+                      const lastName = formData.get('lastName') as string
+                      const email = formData.get('email') as string
+                      const subject = formData.get('subject') as string
+                      const message = formData.get('message') as string
+                      
+                      const mailtoLink = `mailto:papamoacounsellinghub@gmail.com?subject=${encodeURIComponent(`Contact Form: ${subject}`)}&body=${encodeURIComponent(`From: ${firstName} ${lastName} (${email})\n\nSubject: ${subject}\n\nMessage:\n${message}`)}`
+                      
+                      try {
+                        const res = await fetch('/api/contact', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ firstName, lastName, email, subject, message }),
+                        })
+                        const data = await res.json()
+                        if (res.ok && data.ok) {
+                          setIsSubmitted(true)
+                        } else {
+                          console.error('API Error:', data)
+                          // Fallback to mailto
+                          alert('Email service unavailable. Opening your email client instead...')
+                          window.location.href = mailtoLink
+                        }
+                      } catch (err) {
+                        console.error('Network Error:', err)
                         // Fallback to mailto
-                        alert('Email service unavailable. Opening your email client instead...')
+                        alert('Network error. Opening your email client instead...')
                         window.location.href = mailtoLink
                       }
-                    } catch (err) {
-                      console.error('Network Error:', err)
-                      // Fallback to mailto
-                      alert('Network error. Opening your email client instead...')
-                      window.location.href = mailtoLink
-                    }
-                  }}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
-                        <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />
+                    }}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
+                          <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-slate-700 font-medium" htmlFor="lastName">Last name *</Label>
+                          <Input name="lastName" id="lastName" placeholder="Your last name" className="rounded-xl" required />
+                        </div>
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium" htmlFor="lastName">Last name *</Label>
-                        <Input name="lastName" id="lastName" placeholder="Your last name" className="rounded-xl" required />
+                        <Label className="text-slate-700 font-medium" htmlFor="email">Email address *</Label>
+                        <Input name="email" id="email" type="email" placeholder="your.email@example.com" className="rounded-xl" required />
                       </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-700 font-medium" htmlFor="subject">Subject *</Label>
+                        <Input name="subject" id="subject" placeholder="How can we help you today?" className="rounded-xl" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-slate-700 font-medium" htmlFor="message">Your message *</Label>
+                        <Textarea name="message" id="message" rows={5} placeholder="Please share what's on your mind..." className="rounded-xl" required />
+                      </div>
+                      <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-4 px-8 rounded-xl text-lg shadow-xl transition-all duration-300">
+                        <Send className="w-5 h-5 mr-2" />
+                        Send Message
+                      </Button>
+                      <p className="text-slate-500 text-sm text-center">
+                        * Required fields. We respect your privacy and will never share your information.
+                      </p>
+                    </form>
+                  ) : (
+                    <div className="text-center py-12">
+                      <div className="flex justify-center mb-6">
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                          <CheckCircle className="w-8 h-8 text-green-600" />
+                        </div>
+                      </div>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-4">Thank You!</h3>
+                      <p className="text-slate-600 mb-6">
+                        Your message has been sent successfully. We'll get back to you within 24 hours.
+                      </p>
+                      <Button 
+                        onClick={() => setIsSubmitted(false)}
+                        className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-3 px-6 rounded-xl"
+                      >
+                        Send Another Message
+                      </Button>
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium" htmlFor="email">Email address *</Label>
-                      <Input name="email" id="email" type="email" placeholder="your.email@example.com" className="rounded-xl" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium" htmlFor="subject">Subject *</Label>
-                      <Input name="subject" id="subject" placeholder="How can we help you today?" className="rounded-xl" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium" htmlFor="message">Your message *</Label>
-                      <Textarea name="message" id="message" rows={5} placeholder="Please share what's on your mind..." className="rounded-xl" required />
-                    </div>
-                    <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-4 px-8 rounded-xl text-lg shadow-xl transition-all duration-300">
-                      <Send className="w-5 h-5 mr-2" />
-                      Send Message
-                    </Button>
-                    <p className="text-slate-500 text-sm text-center">
-                      * Required fields. We respect your privacy and will never share your information.
-                    </p>
-                  </form>
+                  )}
                 </div>
               </div>
             </div>
