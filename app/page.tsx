@@ -226,14 +226,17 @@ export default function HomePage() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload),
                       })
-                      if (res.ok) {
-                        alert('Thanks! Your message has been sent.')
+                      const data = await res.json()
+                      if (res.ok && data.ok) {
+                        alert('Thanks! Your message has been sent successfully.')
                         form.reset()
                       } else {
-                        alert('Sorry, something went wrong. Please try again later.')
+                        console.error('API Error:', data)
+                        alert(`Sorry, something went wrong: ${data.error || 'Unknown error'}. Please try again later.`)
                       }
                     } catch (err) {
-                      alert('Network error. Please try again later.')
+                      console.error('Network Error:', err)
+                      alert('Network error. Please check your connection and try again.')
                     }
                   }}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
