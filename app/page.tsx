@@ -56,18 +56,18 @@ export default function HomePage() {
                </div>
              </div>
             {/* Trust Indicators */}
-            <div className="flex flex-nowrap justify-center items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 pt-8 overflow-x-auto">
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-teal-300" />
+            <div className="flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-4 lg:gap-6 pt-8 px-2">
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-teal-300" />
                 <span>NZAC Registered</span>
               </div>
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-rose-300" />
-                <span>Trauma-Informed Care</span>
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-rose-300" />
+                <span>Trauma Care</span>
               </div>
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-yellow-300" />
-                <span>5-Star Environment</span>
+              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
+                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-yellow-300" />
+                <span>5-Star</span>
               </div>
             </div>
           </div>
