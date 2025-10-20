@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     console.log("Sending email to:", toAddress)
 
     const result = await resend.emails.send({
-      from: "Papamoa Counselling Hub <onboarding@resend.dev>",
+      from: "Papamoa Counselling Hub <noreply@papamoacounsellinghub.co.nz>",
       to: [toAddress],
       subject: `New enquiry: ${subject}`,
       replyTo: email,
