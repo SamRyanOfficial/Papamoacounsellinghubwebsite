@@ -3,8 +3,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Mail, Phone, Heart, CheckCircle, Star, MapPin, Send } from "lucide-react"
-import { useState } from "react"
+import { Calendar, Clock, Mail, Phone, CheckCircle, MapPin, Send, Tag } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,25 @@ import { Textarea } from "@/components/ui/textarea"
 
 export default function HomePage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+  const heroRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let ticking = false
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen w-full relative overflow-x-hidden">
@@ -25,7 +44,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative min-h-[70vh] flex items-center justify-center">
+      <div ref={heroRef} className="relative min-h-[41vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
          <div className="absolute inset-0">
            <Image
@@ -33,6 +52,11 @@ export default function HomePage() {
              alt="Beautiful Papamoa Beach pathway at sunset"
              fill
              className="object-cover"
+             style={{ 
+               objectPosition: 'center 40%',
+               transform: `translateY(${scrollY * 0.15}px)`,
+               willChange: 'transform'
+             }}
              quality={95}
              priority
              sizes="100vw"
@@ -41,142 +65,202 @@ export default function HomePage() {
            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/20 to-transparent"></div>
          </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 w-full px-4 md:px-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                     <div className="text-center space-y-8 text-white max-w-6xl mx-auto">
-             <div className="space-y-6">
-               <div className="space-y-4">
-                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight pb-8" style={{ lineHeight: '1.2' }}>
-                   <span className="block text-white font-medium">Papamoa</span>
-                   <span className="block bg-gradient-to-r from-teal-200 via-blue-200 to-emerald-200 bg-clip-text text-transparent font-bold">Counselling Hub</span>
-                 </h1>
-                 <p className="text-xl md:text-2xl text-white/90 font-light tracking-wide">
-                   Professional counselling in a coastal sanctuary designed for healing
-                 </p>
-               </div>
-             </div>
-            {/* Trust Indicators */}
-            <div className="flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-4 lg:gap-6 pt-8 px-2">
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-teal-300" />
-                <span>NZAC Registered</span>
-              </div>
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-rose-300" />
-                <span>Trauma Care</span>
-              </div>
-              <div className="flex items-center text-white/80 text-xs sm:text-sm bg-white/10 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-full backdrop-blur-sm whitespace-nowrap flex-shrink-0">
-                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 text-yellow-300" />
-                <span>5-Star</span>
-              </div>
-            </div>
+        {/* Welcome Text with Fade-in Animation */}
+        <div className="relative z-10 text-center animate-fade-in space-y-4 sm:space-y-6 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white drop-shadow-2xl">
+            <span className="bg-gradient-to-r from-white via-teal-100 to-emerald-100 bg-clip-text text-transparent">
+              Welcome to Papamoa Counselling Hub
+            </span>
+          </h1>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-2xl mx-auto">
+            <Button 
+              asChild
+              className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 w-full sm:w-auto min-w-[200px]"
+            >
+              <Link href="/#contact">
+                Book a Session
+              </Link>
+            </Button>
+            <Button 
+              asChild
+              variant="outline"
+              className="bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white hover:bg-white/20 hover:border-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 w-full sm:w-auto min-w-[200px]"
+            >
+              <Link href="/#contact">
+                Ask a Question
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* About Content (merged from About page) */}
-      <section className="relative z-10">
-        <div className="container px-4 py-12 md:px-6 md:py-24">
+      {/* Welcome Section */}
+      <section className="relative z-10 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23059669' fill-opacity='0.4'%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
+        <div className="container px-4 py-12 md:px-6 md:py-24 relative">
           <div className="mx-auto max-w-5xl">
-            <div className="grid gap-12 md:grid-cols-3">
+            <div className="grid gap-12 md:grid-cols-[1.2fr_2fr] lg:grid-cols-[1.1fr_2fr]">
               {/* Sidebar with photo and contact info */}
               <div className="flex flex-col items-center md:items-start gap-6">
-                <div className="relative h-64 w-64 overflow-hidden rounded-full border-4 border-blue-100">
+                <div className="relative h-64 w-64 sm:h-72 sm:w-72 md:h-80 md:w-80 overflow-hidden rounded-full border-4 border-blue-100 shadow-2xl ring-4 ring-blue-50/50">
                   <Image
                     src="/images/mandy-profile.jpg"
-                    alt="Mandy Fisher - Registered Counsellor"
-                    width={256}
-                    height={256}
+                    alt="Mandy Fisher - Qualified Counsellor"
+                    width={320}
+                    height={320}
                     className="object-cover"
                   />
                 </div>
-                <div className="space-y-4 text-center md:text-left">
-                  <h2 className="text-2xl font-bold">Mandy Fisher</h2>
-                  <p className="text-muted-foreground">Registered Counsellor</p>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-blue-600" />
-                      <span>papamoacounsellinghub@gmail.com</span>
+                <div className="space-y-4 sm:space-y-5 text-center md:text-left w-full">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">Mandy Fisher</h2>
+                    <p className="text-blue-600 font-medium text-sm sm:text-base">Qualified Counsellor MNZAC</p>
+                    <p className="text-blue-600 font-medium text-sm sm:text-base">ACC Registered</p>
+                  </div>
+                  <div className="flex flex-col gap-3 bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50 w-full">
+                    <div className="flex items-center gap-3 text-slate-700 min-w-0">
+                      <div className="p-2 rounded-lg bg-blue-50 flex-shrink-0">
+                        <Mail className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <a 
+                        href="mailto:papamoacounsellinghub@gmail.com"
+                        className="text-xs sm:text-sm break-all sm:whitespace-nowrap text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
+                      >
+                        papamoacounsellinghub@gmail.com
+                      </a>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-blue-600" />
-                      <span>021516330</span>
+                    <div className="flex items-center gap-3 text-slate-700">
+                      <div className="p-2 rounded-lg bg-blue-50">
+                        <Phone className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <span className="text-sm">021 516 330</span>
                     </div>
                   </div>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
+                  <Button className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300" asChild>
                     <Link href="/#contact">Book a Session</Link>
                   </Button>
+                </div>
+
+                {/* Session Information */}
+                <div className="space-y-4 w-full">
+                  <h3 className="text-xl font-bold text-slate-900 text-center md:text-left">Session Information</h3>
+                  <div className="grid gap-4 grid-cols-1">
+                    <Card className="bg-white/90 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300 border-2 hover:border-blue-200">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 rounded-lg bg-blue-50 flex-shrink-0">
+                            <Clock className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-sm mb-1">Session Duration</h4>
+                            <p className="text-muted-foreground text-xs">50 minutes</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-white/90 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300 border-2 hover:border-blue-200">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 rounded-lg bg-blue-50 flex-shrink-0">
+                            <Tag className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-sm mb-1">Session Fee</h4>
+                            <p className="text-muted-foreground text-xs">$130+GST</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-white/90 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300 border-2 hover:border-blue-200">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 rounded-lg bg-blue-50 flex-shrink-0">
+                            <Calendar className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-sm mb-1">Availability</h4>
+                            <p className="text-muted-foreground text-xs">Tuesday - Thursday</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
               </div>
 
               {/* Main content */}
-              <div className="md:col-span-2 space-y-8">
-                <div className="space-y-4">
-                  <h3 className="text-3xl font-bold tracking-tighter sm:text-4xl">About Me</h3>
-                  <p className="text-muted-foreground">
-                    I'm a registered counsellor with over 15 years of experience helping clients navigate life's challenges
-                    in our beautiful coastal setting in Papamoa.
-                  </p>
+              <div className="space-y-6 sm:space-y-8">
+                <div id="your-counsellor" className="space-y-4 sm:space-y-5 scroll-mt-20">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+                    <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">Your Counsellor</span>
+                  </h3>
+                  <div className="space-y-4 text-slate-700 leading-relaxed text-base sm:text-lg">
+                    <p>
+                      I&apos;m Mandy Fisher, a <strong className="font-semibold text-slate-900">qualified and experienced counsellor</strong> based in Papamoa, Tauranga Moana.
+                    </p>
+                    <p>
+                      With many years of experience in <strong className="font-semibold text-slate-900">trauma recovery, and emotional wellbeing</strong>, my approach is <strong className="font-semibold text-slate-900">authentic, compassionate, and grounded in professionalism</strong>. I work alongside you to help navigate life&apos;s challenges and find a way forward that feels <strong className="font-semibold text-slate-900">healing and hopeful</strong>.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">My Approach</h3>
-                  <p>
-                    I believe in creating a safe, non-judgmental space where you can explore your thoughts and feelings. Our
-                    peaceful location near Papamoa Beach provides the perfect backdrop for healing and growth. My approach
-                    is client-centered, drawing from various therapeutic modalities to tailor our sessions to your unique
-                    needs.
-                  </p>
-                  <p>
-                    Whether you're dealing with anxiety, depression, relationship issues, or life transitions, I'm here to
-                    support you on your journey toward healing and growth in our tranquil coastal environment.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Specializations</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Anxiety</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Depression</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Trauma</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Sexual Harm</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Relationships</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Grief & Loss</Badge>
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 text-xs">Life Transitions</Badge>
+                <div className="space-y-4 sm:space-y-5">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900">My Approach</h3>
+                  <div className="space-y-4 text-slate-700 leading-relaxed text-base sm:text-lg">
+                    <p>
+                      My work is grounded in the belief that <strong className="font-semibold text-slate-900">healing happens through safe and trusting relationships</strong>.
+                    </p>
+                    <p>
+                      I integrate <strong className="font-semibold text-slate-900">trauma-informed and somatic approaches</strong>, supporting awareness of both body and mind. Together we explore your experiences at a pace that feels right for you, allowing insight and change to unfold naturally.
+                    </p>
+                    <p>
+                      My intention is to offer a <strong className="font-semibold text-slate-900">steady, compassionate presence</strong> — helping you feel understood, and supported as you move toward healing and growth.
+                    </p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Session Information</h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Card>
-                      <CardContent className="flex items-center gap-4 p-4">
-                        <Clock className="h-8 w-8 text-blue-600" />
-                        <div>
-                          <h4 className="font-medium">Session Duration</h4>
-                          <p className="text-muted-foreground">50 minutes</p>
-              </div>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="flex items-center gap-4 p-4">
-                        <Calendar className="h-8 w-8 text-blue-600" />
-                        <div>
-                          <h4 className="font-medium">Availability</h4>
-                          <p className="text-muted-foreground">Tuesday - Thursday</p>
-            </div>
-                      </CardContent>
-                    </Card>
-              </div>
-            </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">Qualifications</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Diploma of Counselling</li>
-                    <li>Registered full member of the New Zealand Association of Counsellors (NZAC)</li>
-                    <li>ACC Registered Counsellor</li>
-                    <li>Specialising in family and sexual harm support</li>
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900">What I Offer</h3>
+                  <ul className="space-y-2.5 sm:space-y-3 text-slate-700 leading-relaxed text-base sm:text-lg">
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>One-on-one sessions to address personal issues</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Support for anxiety, depression, stress, grief, sexual harm or trauma</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Personal growth and self-exploration</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Developing coping skills</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Communication Skills</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Conflict resolution strategies</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Building trust</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Support through major life transitions</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                      <span>Emotional Support during crises</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -185,34 +269,88 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* The Space Section */}
+      <section className="relative z-10 bg-gradient-to-b from-white to-slate-50 py-12 sm:py-16 md:py-20">
+        <div className="container px-4 py-8 sm:py-12 md:px-6 md:py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="space-y-8 sm:space-y-12">
+              {/* Heading */}
+              <div className="text-center space-y-3 sm:space-y-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+                  <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">A Calm and Nurturing Space</span>
+                </h2>
+              </div>
+
+              {/* Content and Images Grid */}
+              <div className="grid gap-6 sm:gap-8 md:grid-cols-2 items-center">
+                {/* Text Content */}
+                <div className="space-y-4 sm:space-y-6 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed order-2 md:order-1">
+                  <p>
+                    Papamoa Counselling Hub was created to feel <strong className="font-semibold text-slate-900">peaceful, welcoming, and restorative</strong> — a space designed with <strong className="font-semibold text-slate-900">comfort and privacy</strong> in mind.
+                  </p>
+                  <p>
+                    From the moment you arrive, you&apos;re invited to <strong className="font-semibold text-slate-900">slow down and breathe</strong>. The room is furnished with your comfort in mind, and intentionally calm, allowing you to feel <strong className="font-semibold text-slate-900">safe and supported</strong> as you begin your session.
+                  </p>
+                  <p>
+                    Sessions are available <strong className="font-semibold text-slate-900">in-person in Papamoa or online</strong>, providing flexibility and accessibility while maintaining a sense of <strong className="font-semibold text-slate-900">connection and care</strong>.
+                  </p>
+                </div>
+
+                {/* Images Grid */}
+                <div className="grid grid-cols-1 gap-4 order-1 md:order-2">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                      src="/images/room-1.jpg"
+                      alt="Peaceful counselling room with comfortable seating"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                      src="/images/room-2.jpg"
+                      alt="Welcoming counselling space designed for comfort"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 bg-gradient-to-b from-slate-100 via-slate-200 to-slate-300 overflow-hidden">
+      <section id="contact" className="relative py-12 sm:py-16 md:py-20 bg-gradient-to-b from-slate-100 via-slate-200 to-slate-300 overflow-hidden scroll-mt-20">
         <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23059669' fill-opacity='0.3'%3E%3Cpolygon points='50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40'/%3E%3C/g%3E%3C/svg%3E")`
         }}></div>
-        <div className="container px-6 md:px-8 relative z-10">
-          <div className="mx-auto max-w-3xl space-y-10">
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+        <div className="container px-4 sm:px-6 md:px-8 relative z-10">
+          <div className="mx-auto max-w-3xl space-y-8 sm:space-y-10">
+            <div className="text-center space-y-3 sm:space-y-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
                 Send us a <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">Message</span>
               </h2>
-              <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-700 leading-relaxed">
+              <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed px-4">
                 We're here to support you. Reach out and we'll get back within 24 hours.
               </p>
             </div>
 
             {/* Centered Contact Form Only */}
             <div>
-              <div className="bg-white rounded-3xl shadow-xl border border-white/60 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-emerald-500 p-8 text-white text-center">
-                  <h3 className="text-2xl font-bold">Send us a Message</h3>
-                  <p className="text-blue-100 leading-relaxed mt-1">
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-white/60 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-emerald-500 p-6 sm:p-8 text-white text-center">
+                  <h3 className="text-xl sm:text-2xl font-bold">Send us a Message</h3>
+                  <p className="text-blue-100 leading-relaxed mt-1 text-sm sm:text-base">
                     Whether you're seeking support or have a question, we're here to help.
                   </p>
                 </div>
-                <div className="p-8">
+                <div className="p-4 sm:p-6 md:p-8">
                   {!isSubmitted ? (
-                    <form className="space-y-6" onSubmit={async (e) => {
+                    <form className="space-y-4 sm:space-y-6" onSubmit={async (e) => {
                       e.preventDefault()
                       const form = e.currentTarget as HTMLFormElement
                       const formData = new FormData(form)
@@ -248,7 +386,7 @@ export default function HomePage() {
                         window.location.href = mailtoLink
                       }
                     }}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         <div className="space-y-2">
                           <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
                           <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />

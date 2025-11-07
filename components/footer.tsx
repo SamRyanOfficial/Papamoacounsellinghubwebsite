@@ -10,12 +10,6 @@ export function Footer() {
             <p className="text-sm text-muted-foreground mb-4">
               A peaceful coastal space for healing and growth, providing professional counselling services in beautiful Papamoa.
             </p>
-            <address className="not-italic text-sm text-muted-foreground">
-              <p>Papamoa Beach, Tauranga</p>
-              <p>Bay of Plenty, New Zealand</p>
-              <p className="mt-2">Email: papamoacounsellinghub@gmail.com</p>
-              <p>Phone: 021516330</p>
-            </address>
           </div>
           <div className="border-t pt-6 w-full">
             <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Papamoa Counselling Hub. All rights reserved.</p>
