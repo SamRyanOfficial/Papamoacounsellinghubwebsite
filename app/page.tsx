@@ -33,9 +33,63 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Structured Data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Papamoa Counselling Hub",
+    "description": "Professional counselling services with Mandy Fisher, a qualified and experienced counsellor in Papamoa, Tauranga. Specializing in trauma recovery, anxiety, depression, grief, and emotional wellbeing.",
+    "url": "https://papamoacounsellinghub.com",
+    "telephone": "+6421516330",
+    "email": "papamoacounsellinghub@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Papamoa",
+      "addressRegion": "Bay of Plenty",
+      "addressCountry": "NZ"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-37.7167",
+      "longitude": "176.3000"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Papamoa"
+    },
+    "serviceType": [
+      "Counselling",
+      "Trauma Therapy",
+      "Anxiety Counselling",
+      "Depression Counselling",
+      "Grief Counselling",
+      "Online Counselling"
+    ],
+    "provider": {
+      "@type": "Person",
+      "name": "Mandy Fisher",
+      "jobTitle": "Qualified Counsellor",
+      "memberOf": {
+        "@type": "Organization",
+        "name": "New Zealand Association of Counsellors (NZAC)"
+      },
+      "credential": [
+        "Qualified Counsellor MNZAC",
+        "ACC Registered"
+      ]
+    },
+    "priceRange": "$130+GST",
+    "openingHours": "Tu-Th 09:00-17:00"
+  }
+
   return (
-    <div className="flex flex-col min-h-screen w-full relative overflow-x-hidden">
-      {/* Coastal Background Textures */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="flex flex-col min-h-screen w-full relative overflow-x-hidden">
+        {/* Coastal Background Textures */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-amber-50/20 to-teal-50/30"></div>
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -49,7 +103,7 @@ export default function HomePage() {
          <div className="absolute inset-0">
            <Image
              src="/images/papamoa-beach-hero.jpg"
-             alt="Beautiful Papamoa Beach pathway at sunset"
+             alt="Papamoa Beach pathway at sunset - peaceful coastal setting for counselling sessions in Tauranga, New Zealand"
              fill
              className="object-cover"
              style={{ 
@@ -108,7 +162,7 @@ export default function HomePage() {
                 <div className="relative h-64 w-64 sm:h-72 sm:w-72 md:h-80 md:w-80 overflow-hidden rounded-full border-4 border-blue-100 shadow-2xl ring-4 ring-blue-50/50">
                   <Image
                     src="/images/mandy-profile.jpg"
-                    alt="Mandy Fisher - Qualified Counsellor"
+                    alt="Mandy Fisher - Qualified Counsellor MNZAC and ACC Registered providing professional counselling services in Papamoa, Tauranga"
                     width={320}
                     height={320}
                     className="object-cover"
@@ -121,7 +175,7 @@ export default function HomePage() {
                     <p className="text-blue-600 font-medium text-sm sm:text-base">ACC Registered</p>
                   </div>
                   <div className="flex flex-col gap-3 bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50 w-full">
-                    <div className="flex items-center gap-3 text-slate-700 min-w-0">
+                    <div className="flex items-center gap-3 text-slate-900 min-w-0">
                       <div className="p-2 rounded-lg bg-blue-50 flex-shrink-0">
                         <Mail className="h-4 w-4 text-blue-600" />
                       </div>
@@ -132,7 +186,7 @@ export default function HomePage() {
                         papamoacounsellinghub@gmail.com
                       </a>
                     </div>
-                    <div className="flex items-center gap-3 text-slate-700">
+                    <div className="flex items-center gap-3 text-slate-900">
                       <div className="p-2 rounded-lg bg-blue-50">
                         <Phone className="h-4 w-4 text-blue-600" />
                       </div>
@@ -156,7 +210,7 @@ export default function HomePage() {
                           </div>
                           <div className="flex-1">
                             <h4 className="font-semibold text-sm mb-1">Session Duration</h4>
-                            <p className="text-muted-foreground text-xs">50 minutes</p>
+                            <p className="text-slate-800 text-xs">50 minutes</p>
                           </div>
                         </div>
                       </CardContent>
@@ -169,7 +223,7 @@ export default function HomePage() {
                           </div>
                           <div className="flex-1">
                             <h4 className="font-semibold text-sm mb-1">Session Fee</h4>
-                            <p className="text-muted-foreground text-xs">$130+GST</p>
+                            <p className="text-slate-800 text-xs">$130+GST</p>
                           </div>
                         </div>
                       </CardContent>
@@ -182,7 +236,7 @@ export default function HomePage() {
                           </div>
                           <div className="flex-1">
                             <h4 className="font-semibold text-sm mb-1">Availability</h4>
-                            <p className="text-muted-foreground text-xs">Tuesday - Thursday</p>
+                            <p className="text-slate-800 text-xs">Tuesday - Thursday</p>
                           </div>
                         </div>
                       </CardContent>
@@ -197,7 +251,7 @@ export default function HomePage() {
                   <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                     <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">Your Counsellor</span>
                   </h3>
-                  <div className="space-y-4 text-slate-700 leading-relaxed text-base sm:text-lg">
+                  <div className="space-y-4 text-slate-900 leading-relaxed text-base sm:text-lg">
                     <p>
                       I&apos;m Mandy Fisher, a <strong className="font-semibold text-slate-900">qualified and experienced counsellor</strong> based in Papamoa, Tauranga Moana.
                     </p>
@@ -209,7 +263,7 @@ export default function HomePage() {
 
                 <div className="space-y-4 sm:space-y-5">
                   <h3 className="text-xl sm:text-2xl font-bold text-slate-900">My Approach</h3>
-                  <div className="space-y-4 text-slate-700 leading-relaxed text-base sm:text-lg">
+                  <div className="space-y-4 text-slate-900 leading-relaxed text-base sm:text-lg">
                     <p>
                       My work is grounded in the belief that <strong className="font-semibold text-slate-900">healing happens through safe and trusting relationships</strong>.
                     </p>
@@ -224,7 +278,7 @@ export default function HomePage() {
 
                 <div className="space-y-4">
                   <h3 className="text-xl sm:text-2xl font-bold text-slate-900">What I Offer</h3>
-                  <ul className="space-y-2.5 sm:space-y-3 text-slate-700 leading-relaxed text-base sm:text-lg">
+                  <ul className="space-y-2.5 sm:space-y-3 text-slate-900 leading-relaxed text-base sm:text-lg">
                     <li className="flex items-start gap-3">
                       <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
                       <span>One-on-one sessions to address personal issues</span>
@@ -284,7 +338,7 @@ export default function HomePage() {
               {/* Content and Images Grid */}
               <div className="grid gap-6 sm:gap-8 md:grid-cols-2 items-center">
                 {/* Text Content */}
-                <div className="space-y-4 sm:space-y-6 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed order-2 md:order-1">
+                <div className="space-y-4 sm:space-y-6 text-base sm:text-lg md:text-xl text-slate-900 leading-relaxed order-2 md:order-1">
                   <p>
                     Papamoa Counselling Hub was created to feel <strong className="font-semibold text-slate-900">peaceful, welcoming, and restorative</strong> — a space designed with <strong className="font-semibold text-slate-900">comfort and privacy</strong> in mind.
                   </p>
@@ -301,7 +355,7 @@ export default function HomePage() {
                   <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
                     <Image
                       src="/images/room-1.jpg"
-                      alt="Peaceful counselling room with comfortable seating"
+                      alt="Peaceful counselling room at Papamoa Counselling Hub with comfortable seating - calm and nurturing space for therapy sessions"
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -310,7 +364,7 @@ export default function HomePage() {
                   <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
                     <Image
                       src="/images/room-2.jpg"
-                      alt="Welcoming counselling space designed for comfort"
+                      alt="Welcoming counselling space at Papamoa Counselling Hub designed for comfort and privacy - professional therapy environment in Tauranga"
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -334,7 +388,7 @@ export default function HomePage() {
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
                 Send us a <span className="bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">Message</span>
               </h2>
-              <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed px-4">
+              <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-900 leading-relaxed px-4">
                 We're here to support you. Reach out and we'll get back within 24 hours.
               </p>
             </div>
@@ -388,31 +442,31 @@ export default function HomePage() {
                     }}>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         <div className="space-y-2">
-                          <Label className="text-slate-700 font-medium" htmlFor="firstName">First name *</Label>
+                          <Label className="text-slate-900 font-medium" htmlFor="firstName">First name *</Label>
                           <Input name="firstName" id="firstName" placeholder="Your first name" className="rounded-xl" required />
                   </div>
                         <div className="space-y-2">
-                          <Label className="text-slate-700 font-medium" htmlFor="lastName">Last name *</Label>
+                          <Label className="text-slate-900 font-medium" htmlFor="lastName">Last name *</Label>
                           <Input name="lastName" id="lastName" placeholder="Your last name" className="rounded-xl" required />
                     </div>
                   </div>
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium" htmlFor="email">Email address *</Label>
+                        <Label className="text-slate-900 font-medium" htmlFor="email">Email address *</Label>
                         <Input name="email" id="email" type="email" placeholder="your.email@example.com" className="rounded-xl" required />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium" htmlFor="subject">Subject *</Label>
+                        <Label className="text-slate-900 font-medium" htmlFor="subject">Subject *</Label>
                         <Input name="subject" id="subject" placeholder="How can we help you today?" className="rounded-xl" required />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-slate-700 font-medium" htmlFor="message">Your message *</Label>
+                        <Label className="text-slate-900 font-medium" htmlFor="message">Your message *</Label>
                         <Textarea name="message" id="message" rows={5} placeholder="Please share what's on your mind..." className="rounded-xl" required />
                       </div>
                       <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-4 px-8 rounded-xl text-lg shadow-xl transition-all duration-300">
                         <Send className="w-5 h-5 mr-2" />
                         Send Message
                       </Button>
-                      <p className="text-slate-500 text-sm text-center">
+                      <p className="text-slate-700 text-sm text-center">
                         * Required fields. We respect your privacy and will never share your information.
                       </p>
                     </form>
@@ -424,7 +478,7 @@ export default function HomePage() {
                         </div>
                       </div>
                       <h3 className="text-2xl font-bold text-slate-900 mb-4">Thank You!</h3>
-                      <p className="text-slate-600 mb-6">
+                      <p className="text-slate-800 mb-6">
                         Your message has been sent successfully. We'll get back to you within 24 hours.
                       </p>
                       <Button 
@@ -441,6 +495,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
